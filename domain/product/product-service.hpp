@@ -1,39 +1,30 @@
-//
-// Created by omer on 10/15/24.
-//
-
 #ifndef PRODUCT_SERVICE_HPP
 #define PRODUCT_SERVICE_HPP
+
 #include "product-repository.hpp"
 #include "product.hpp"
 #include <pqxx/pqxx>
 
-#include
-#include
-#include
-#include
-#include
-#include
 
-namespace ProductService {
+namespace  ProductService {
 
-    inline void addProduct(const int &id, std::string &name, std::string &productId, pqxx::connection &conn) {
-        const Product product{id, name, productId};
+    inline void addProduct(const int& id, std::string& name, std::string& categoryId, pqxx::connection& conn) {
+        const Product product{id, name, categoryId};
         ProductRepository::addProduct(product, conn);
     }
-    inline std::vector<Product> listProducts(pqxx::connection& conn) {
-        return ProductRepository::listProducts(conn);
+    inline std::vector<Product> listProducts(const int& id, std::string& name, std::string& categoryId,  pqxx::connection& conn) {
+        const Product product{id, name, categoryId};
+        return ProductRepository::listProducts(product, conn);
     }
-    inline void deleteProduct(const Product& id, pqxx::connection& txn) {
-        ProductRepository::removeProduct(id, txn);
+    inline void deleteProduct(const Product& id, pqxx::connection& conn) {
+        ProductRepository::removeProduct(id, conn);
     }
-    inline void updateProduct(const int id, std::string &name, std::string &productId, pqxx::connection& txn) {
-        Product product{id, name, productId};
+    inline void updateProduct(const int& id, std::string& name, std::string& categoryId,  pqxx::connection& conn) {
+        Product product{id, name, categoryId};
         product.id = id;
-        ProductRepository::updateProduct(product, txn);
+        ProductRepository::updateProduct(product, conn);
     }
-
-
-
 }
-#endif //PRODUCT_SERVICE_HPP
+
+
+#endif
